@@ -79,7 +79,7 @@ def upload_to(field_path, default):
     ``UPLOAD_TO_HANDLERS`` setting.
     """
     from mezzanine.conf import settings
-
+    
     for k, v in settings.UPLOAD_TO_HANDLERS.items():
         if k.lower() == field_path.lower():
             return import_dotted_path(v)
@@ -138,7 +138,7 @@ class ModelMixinBase(type):
                 "an inner Meta class with the "
                 "``mixin_for`` attribute defined, "
                 "with a value that is a valid model."
-            )
+        )
         # Copy fields and methods onto the model being mixed into, and
         # return it as the definition for the mixin class itself.
         for k, v in attrs.items():
