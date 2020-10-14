@@ -13,7 +13,8 @@ from mezzanine.utils.html import escape
 
 class OrderField(models.IntegerField):
     def formfield(self, **kwargs):
-        kwargs.update({"widget": OrderWidget, "required": False})
+        kwargs.update({'widget': OrderWidget,
+                       'required': False})
         return super(OrderField, self).formfield(**kwargs)
 
 
@@ -30,18 +31,13 @@ class RichTextField(models.TextField):
         default = kwargs.get("widget", None) or AdminTextareaWidget
         if default is AdminTextareaWidget:
             from mezzanine.conf import settings
-
             richtext_widget_path = settings.RICHTEXT_WIDGET_CLASS
             try:
                 widget_class = import_dotted_path(richtext_widget_path)
             except ImportError:
-                raise ImproperlyConfigured(
-                    _(
-                        "Could not import the value of "
-                        "settings.RICHTEXT_WIDGET_CLASS: "
-                        "%s" % richtext_widget_path
-                    )
-                )
+                raise ImproperlyConfigured(_("Could not import the value of "
+                                             "settings.RICHTEXT_WIDGET_CLASS: "
+                                             "%s" % richtext_widget_path))
             kwargs["widget"] = widget_class()
         kwargs.setdefault("required", False)
         formfield = super(RichTextField, self).formfield(**kwargs)
@@ -79,7 +75,7 @@ class MultiChoiceField(models.CharField):
             value = ",".join([str(i) for i in value])
         return value
 
-    def from_db_value(self, value, expression, connection, context):
+    def from_db_value(self, value, expression, connection,  *args, **kwargs):#paola context):
         return self.to_python(value)
 
     def to_python(self, value):
