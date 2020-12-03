@@ -3,8 +3,8 @@ from django.contrib import admin
 from django_comments.admin import CommentsAdmin
 from django.utils.translation import ugettext_lazy as _
 
-from mezzanine.generic.models import ThreadedComment
-
+from mezzanine.generic.models import ThreadedComment,Keyword
+from mezzanine.generic.managers import CommentManager, KeywordManager
 
 __all__ = ("ThreadedCommentAdmin",)
 
@@ -46,3 +46,15 @@ using_disqus = bool(getattr(settings, "COMMENTS_DISQUS_SHORTNAME", False))
 
 if generic_comments and not using_disqus:
     admin.site.register(ThreadedComment, ThreadedCommentAdmin)
+
+class KeywordAdmin(admin.ModelAdmin):
+    """
+    Admin class for comments.
+    """
+
+
+    # Disable the 'Add' action for this model, fixed a crash if you try
+    # to create a comment from admin panel
+     
+admin.site.register(Keyword, KeywordAdmin)
+
